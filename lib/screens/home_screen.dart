@@ -1,5 +1,5 @@
 import 'package:alaseel_todos/models/task_model.dart';
-import 'package:alaseel_todos/screens/detailed_task_screen.dart';
+import 'package:alaseel_todos/widgets/task_card.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -41,48 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(24),
                   itemCount: waitingTasks.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailedTaskScreen(
-                                      taskModel: waitingTasks[index],
-                                    )));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 12),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  waitingTasks[index].name,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                Checkbox(
-                                    value: waitingTasks[index].isDone,
-                                    onChanged: (a) {
-                                      setState(() {
-                                        waitingTasks[index].isDone =
-                                            !waitingTasks[index].isDone;
-
-                                        completedTasks.add(waitingTasks[index]);
-                                        waitingTasks
-                                            .remove(waitingTasks[index]);
-                                      });
-                                    })
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                    return TaskCard(
+                      taskModel: waitingTasks[index],
                     );
                   },
                 ),
@@ -90,49 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(24),
                   itemCount: completedTasks.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DetailedTaskScreen(
-                                      taskModel: completedTasks[index],
-                                    )));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 12),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  completedTasks[index].name,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                Checkbox(
-                                    value: completedTasks[index].isDone,
-                                    onChanged: (a) {
-                                      setState(() {
-                                        completedTasks[index].isDone =
-                                            !completedTasks[index].isDone;
-
-                                        waitingTasks.add(completedTasks[index]);
-                                        completedTasks
-                                            .remove(completedTasks[index]);
-                                      });
-                                    })
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
+                    return TaskCard(taskModel: completedTasks[index]);
                   },
                 ),
               ],
@@ -168,10 +86,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           TextButton(
                               onPressed: () {
                                 setState(() {
-                                  waitingTasks.add(TaskModel(
-                                      name: taskNameController.text,
-                                      createdAt: DateTime.now()));
-                                  taskNameController.clear();
+                                  if (taskNameController.text.isNotEmpty) {
+                                    waitingTasks.add(TaskModel(
+                                        name: taskNameController.text,
+                                        createdAt: DateTime.now()));
+                                    taskNameController.clear();
+                                  }
                                 });
                                 Navigator.pop(context);
                               },
