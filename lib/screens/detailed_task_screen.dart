@@ -12,6 +12,8 @@ class DetailedTaskScreen extends StatefulWidget {
 }
 
 class _DetailedTaskScreenState extends State<DetailedTaskScreen> {
+
+  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

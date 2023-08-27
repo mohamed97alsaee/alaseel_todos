@@ -4,8 +4,10 @@ import '../models/task_model.dart';
 import 'package:flutter/material.dart';
 
 class TaskCard extends StatefulWidget {
-  const TaskCard({super.key, required this.taskModel});
+  const TaskCard({super.key, required this.taskModel , required this.onTaskSwitch});
   final TaskModel taskModel;
+  final Function onTaskSwitch ;
+  
   @override
   State<TaskCard> createState() => _TaskCardState();
 }
@@ -34,12 +36,7 @@ class _TaskCardState extends State<TaskCard> {
             trailing: Checkbox(
                 value: widget.taskModel.isDone,
                 onChanged: (a) {
-                  setState(() {
-                    widget.taskModel.isDone = !widget.taskModel.isDone;
-                     // TODO: how i can pass this logic from HomeScreen 
-                    // completedTasks.add(widget.taskModel);
-                    // waitingTasks.remove(widget.taskModel);
-                  });
+                widget.onTaskSwitch();
                 }),
           ),
         ));
